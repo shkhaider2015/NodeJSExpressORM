@@ -1,15 +1,22 @@
+const { Sequelize } = require("sequelize");
 let mysql = require("mysql");
 
-let connection = mysql.createPool({
-    connectionLimit: 5,
+const sequalize = new Sequelize('test_node', 'root', '', {
     host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'test_node'
+    dialect: 'mysql'
 })
-
-
+sequalize.sync();
+const connect = async () =>
+{
+    try {
+        await sequalize.authenticate();
+        console.log("Connection establish successfully");
+    } catch (error) {
+        console.log("Unable to connect to the database : ", error);
+    }
+}
 
 module.exports = {
-    DatabaseConnection: connection
+    connect,
+    sequalize
 }
